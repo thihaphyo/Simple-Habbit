@@ -104,7 +104,7 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:text="Day 3"
                     android:textAllCaps="false"
-                    app:cornerRadius="30dp"
+                    app:cornerRadius="40dp"
                     app:icon="@drawable/ic_play_arrow_black_24dp"
                     app:iconPadding="-5dp" />
 
