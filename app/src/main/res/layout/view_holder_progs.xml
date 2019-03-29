@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/margin_medium_2"
+    android:background="#212837">
+
+
+    <com.padc.simplehabbit.utils.RoundRectCornerImageView
+        android:id="@+id/iv_program"
+        android:layout_width="180dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/dummy_bg" />
+
+    <TextView
+        android:id="@+id/tv_program"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_program"
+        android:layout_alignLeft="@+id/iv_program"
+        android:layout_alignRight="@+id/iv_program"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="Program Name"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_regular_2x" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_program"
+        android:layout_alignLeft="@id/tv_program"
+        android:layout_alignRight="@id/tv_program"
+        android:text="5 mins"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_regular" />
+
+
+</RelativeLayout>

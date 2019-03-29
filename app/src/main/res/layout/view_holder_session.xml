@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_medium_2"
+    android:background="#212837"
+    android:padding="@dimen/margin_medium">
+
+    <TextView
+        android:id="@+id/tv_session_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/margin_medium"
+        android:text="1"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/tv_session_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="Session"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/tv_session_duration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="5 mins"
+        android:textColor="@color/colorWhite" />
+</LinearLayout>
