@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#212837"
+    android:background="@color/bg"
     tools:context=".activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -22,6 +22,7 @@
             app:title="Meditate" />
 
         <android.support.design.widget.TabLayout
+            android:id="@+id/tl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#373f4e"
@@ -47,119 +48,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium_2"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:text="Start Here"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_regular_3x" />
-
-            <RelativeLayout
-                android:id="@+id/rl_current"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_below="@+id/tv_start"
-                android:layout_marginLeft="@dimen/margin_medium_2"
-                android:layout_marginRight="@dimen/margin_medium_2"
-                android:layout_marginBottom="@dimen/margin_medium_2">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/iv_current"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/dummy_bg"
-                    android:tint="#33000000" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/tv_starter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="79dp"
-                    android:text="Simple Habit Starter"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_heading_1x" />
-
-
-                <android.support.design.button.MaterialButton
-                    android:id="@+id/btn_start"
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:layout_below="@+id/tv_starter"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:text="Day 3"
-                    android:textAllCaps="false"
-                    app:cornerRadius="40dp"
-                    app:icon="@drawable/ic_play_arrow_black_24dp"
-                    app:iconPadding="-5dp" />
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="@dimen/margin_medium"
-                    android:text="5 mins"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_regular" />
-
-            </RelativeLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/rl_current"
-                android:layout_marginLeft="@dimen/margin_medium_2"
-                android:layout_marginTop="@dimen/margin_medium_2"
-                android:layout_marginRight="@dimen/margin_medium_2">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_topic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rv_main"
-                android:layout_marginLeft="@dimen/margin_medium_2"
-                android:layout_marginTop="@dimen/margin_medium_2"
-                android:layout_marginRight="@dimen/margin_medium_2"
-                android:text="All Topics"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_regular_3x" />
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_topics"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/tv_topic"
-                android:layout_marginLeft="@dimen/margin_medium_2"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginRight="@dimen/margin_medium_2"
-                android:layout_marginBottom="@dimen/margin_medium_2" />
-
-
-        </RelativeLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

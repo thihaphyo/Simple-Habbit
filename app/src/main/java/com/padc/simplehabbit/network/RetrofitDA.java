@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -59,27 +58,13 @@ public class RetrofitDA implements DataAgent {
 
         Call<CategoriesProgramsResponse> apiCall = mApi.getCatProgs(accessToken, page);
 
-        apiCall.enqueue(new Callback<CategoriesProgramsResponse>() {
+        apiCall.enqueue(new SimpleHabbitCallback<CategoriesProgramsResponse, CatProgResponseDelegate>(delegate) {
+
             @Override
             public void onResponse(Call<CategoriesProgramsResponse> call, Response<CategoriesProgramsResponse> response) {
-
+                super.onResponse(call, response);
                 CategoriesProgramsResponse categoriesProgramsResponse = response.body();
-
-                if (categoriesProgramsResponse.isSuccess()) {
-
-                    delegate.onSuccess(categoriesProgramsResponse.getCategoryPrograms());
-
-                } else {
-
-                    delegate.onFail(categoriesProgramsResponse.getMessage());
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoriesProgramsResponse> call, Throwable t) {
-
-                delegate.onFail(t.getLocalizedMessage());
+                delegate.onSuccess(categoriesProgramsResponse.getCategoryPrograms());
             }
         });
     }
@@ -87,33 +72,15 @@ public class RetrofitDA implements DataAgent {
     @Override
     public void getCurrentProgram(String accessToken, int page, final CurrentProgramResponseDelegate delegate) {
 
-
         Call<CurrentProgramResponse> currentProgramCall = mApi.getCurrentProgram(accessToken, page);
 
-        currentProgramCall.enqueue(new Callback<CurrentProgramResponse>() {
+        currentProgramCall.enqueue(new SimpleHabbitCallback<CurrentProgramResponse, CurrentProgramResponseDelegate>(delegate) {
 
             @Override
             public void onResponse(Call<CurrentProgramResponse> call, Response<CurrentProgramResponse> response) {
-
+                super.onResponse(call, response);
                 CurrentProgramResponse currentProgramResponse = response.body();
-                if (currentProgramResponse.isSuccess()) {
-
-                    delegate.onSuccess(currentProgramResponse.getCurrentProgramVO());
-
-                } else {
-
-                    delegate.onFail(currentProgramResponse.getMessage());
-
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<CurrentProgramResponse> call, Throwable t) {
-
-                delegate.onFail(t.getMessage());
-
+                delegate.onSuccess(currentProgramResponse.getCurrentProgramVO());
             }
         });
 
@@ -122,29 +89,14 @@ public class RetrofitDA implements DataAgent {
     @Override
     public void getTopics(String accessToken, int page, final TopicResponseDelegate topicResponseDelegate) {
 
-
         Call<TopicsResponse> topicsResponseCall = mApi.getTopics(accessToken, page);
-        topicsResponseCall.enqueue(new Callback<TopicsResponse>() {
+        topicsResponseCall.enqueue(new SimpleHabbitCallback<TopicsResponse, TopicResponseDelegate>(topicResponseDelegate) {
+
             @Override
             public void onResponse(Call<TopicsResponse> call, Response<TopicsResponse> response) {
-
+                super.onResponse(call, response);
                 TopicsResponse topicsResponse = response.body();
-
-                if (topicsResponse.isSuccess()) {
-
-                    topicResponseDelegate.onSuccess(topicsResponse.getTopics());
-
-                } else {
-
-                    topicResponseDelegate.onFail(topicsResponse.getMessage());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<TopicsResponse> call, Throwable t) {
-
-                topicResponseDelegate.onFail(t.getMessage());
+                topicResponseDelegate.onSuccess(topicsResponse.getTopics());
 
             }
         });

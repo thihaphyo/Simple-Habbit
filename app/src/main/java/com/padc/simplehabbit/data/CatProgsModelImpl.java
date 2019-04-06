@@ -1,13 +1,14 @@
 package com.padc.simplehabbit.data;
 
+import android.content.Context;
+
 import com.padc.simplehabbit.data.vos.CategoryProgramsVO;
 import com.padc.simplehabbit.data.vos.ProgramsVO;
 import com.padc.simplehabbit.delegates.CatProgResponseDelegate;
 import com.padc.simplehabbit.network.DataAgent;
 import com.padc.simplehabbit.network.RetrofitDA;
+import com.padc.simplehabbit.persitence.SimpleHabbitDatabase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CatProgsModelImpl implements CatProgsModel {
@@ -16,25 +17,27 @@ public class CatProgsModelImpl implements CatProgsModel {
 
     private DataAgent mDataAgent;
 
-    private HashMap<String, ProgramsVO> programs;
+
+    private SimpleHabbitDatabase mDatabase;
 
 
-    private List<CategoryProgramsVO> mList;
-
-    private CatProgsModelImpl() {
-
-        programs = new HashMap<>();
-
-        mList = new ArrayList<>();
+    private CatProgsModelImpl(Context context) {
 
         mDataAgent = RetrofitDA.getObjInstance();
+
+        mDatabase = SimpleHabbitDatabase.getObjInstance(context);
+    }
+
+    public static void initModel(Context context) {
+
+        objInstance = new CatProgsModelImpl(context);
     }
 
     public static CatProgsModelImpl getObjInstance() {
 
         if (objInstance == null) {
 
-            objInstance = new CatProgsModelImpl();
+            throw new RuntimeException("CatProgsModel must intialized");
         }
         return objInstance;
     }
@@ -42,16 +45,16 @@ public class CatProgsModelImpl implements CatProgsModel {
     @Override
     public List<CategoryProgramsVO> getCatProgs(String accessToken, final CatProgsDelegate delegate) {
 
-        if (mList.isEmpty()) {
+        if (mDatabase.isCategoryProgramsEmpty()) {
 
 
             mDataAgent.getCatProgs(accessToken, 1, new CatProgResponseDelegate() {
                 @Override
                 public void onSuccess(List<CategoryProgramsVO> categoryPrograms) {
 
-                    addToList(categoryPrograms);
-
-                    delegate.onSuccess(categoryPrograms);
+                    mDatabase.catProgsDao().insert(categoryPrograms);
+                    List<CategoryProgramsVO> mDBList = mDatabase.catProgsDao().getAllCategoryPrograms();
+                    delegate.onSuccess(mDBList);
                 }
 
                 @Override
@@ -65,26 +68,27 @@ public class CatProgsModelImpl implements CatProgsModel {
 
         }
 
-        return mList;
+        return mDatabase.catProgsDao().getAllCategoryPrograms();
 
 
     }
 
-    private void addToList(List<CategoryProgramsVO> categoryPrograms) {
-
-        for (CategoryProgramsVO categoryProgramsVO : categoryPrograms) {
-
-            for (ProgramsVO program : categoryProgramsVO.getPrograms()) {
-
-                programs.put(program.getprogramID(), program);
-            }
-
-        }
-    }
 
     public ProgramsVO getProgramByID(String id) {
 
-        return programs.get(id);
+        List<CategoryProgramsVO> lsit = mDatabase.catProgsDao().getAllCategoryPrograms();
 
+        for (CategoryProgramsVO categoryPrograms : lsit) {
+
+            for (ProgramsVO program : categoryPrograms.getPrograms()) {
+
+                if (program.getprogramID().equals(id)) {
+
+                    return program;
+                }
+            }
+        }
+
+        return null;
     }
 }

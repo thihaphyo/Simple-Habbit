@@ -1,125 +1,88 @@
 package com.padc.simplehabbit.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.View;
 
 import com.padc.simplehabbit.R;
-import com.padc.simplehabbit.adapters.CatProgsAdapter;
-import com.padc.simplehabbit.adapters.TopicsAdapter;
-import com.padc.simplehabbit.data.CatProgsModel;
-import com.padc.simplehabbit.data.CatProgsModelImpl;
-import com.padc.simplehabbit.data.CurrentProgramModel;
-import com.padc.simplehabbit.data.CurrentProgramModelImpl;
-import com.padc.simplehabbit.data.TopicsModel;
-import com.padc.simplehabbit.data.TopicsModelImpl;
-import com.padc.simplehabbit.data.vos.CategoryProgramsVO;
-import com.padc.simplehabbit.data.vos.CurrentProgramVO;
 import com.padc.simplehabbit.data.vos.ProgramsVO;
-import com.padc.simplehabbit.data.vos.TopicsVO;
 import com.padc.simplehabbit.delegates.ProgramDelegate;
+import com.padc.simplehabbit.fragments.MeditateFragment;
+import com.padc.simplehabbit.fragments.UserProfileFragment;
 
-import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements ProgramDelegate {
+public class MainActivity extends BaseActivity implements ProgramDelegate {
 
-    private RecyclerView rvMain;
-    private RecyclerView rvTopics;
-    private CatProgsAdapter adapter;
-    private TopicsAdapter mAdapter;
+
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView mBottomNavigation;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.tl)
+    TabLayout tabLayout;
+
+    private Fragment mFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        rvTopics = findViewById(R.id.rv_topics);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-
-        rvMain = findViewById(R.id.rv_main);
-        rvMain.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new CatProgsAdapter(this);
-        rvMain.setAdapter(adapter);
-
-        rvTopics.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        mAdapter = new TopicsAdapter();
-        rvTopics.setAdapter(mAdapter);
-
-        final TextView tvStarter = findViewById(R.id.tv_starter);
-        final TextView tvPeriod = findViewById(R.id.tv_time);
-        final Button btnStart = findViewById(R.id.btn_start);
-
-
-        CurrentProgramVO programVO = CurrentProgramModelImpl.getObjInstance().getCurrentProgram("b002c7e1a528b7cb460933fc2875e916", new CurrentProgramModel.CurrentProgramDelegate() {
+        mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onSuccess(CurrentProgramVO currentProgram) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-                tvStarter.setText(currentProgram.getTitle());
-                tvPeriod.setText(currentProgram.getaverageLength().get(0) + " mins");
-                btnStart.setText(currentProgram.getCurrentPeriod());
-            }
-
-            @Override
-            public void onFail(String errorMessge) {
-
-            }
-        });
-
-        if (programVO != null) {
-
-            tvStarter.setText(programVO.getTitle());
-            tvPeriod.setText(programVO.getaverageLength().get(0) + " mins");
-            btnStart.setText(programVO.getCurrentPeriod());
-        }
-
-
-        List<CategoryProgramsVO> list = CatProgsModelImpl.getObjInstance().getCatProgs("b002c7e1a528b7cb460933fc2875e916", new CatProgsModel.CatProgsDelegate() {
-            @Override
-            public void onSuccess(List<CategoryProgramsVO> categoryProgramsVOS) {
-
-                adapter.setNewData(categoryProgramsVOS);
-
-            }
-
-            @Override
-            public void onFail(String error) {
-
+                switch (menuItem.getItemId()) {
+                    case R.id.action_meditate:
+                        toolbar.setTitle("Meditate");
+                        tabLayout.setVisibility(View.VISIBLE);
+                        mFragment = MeditateFragment.newFragemnt();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fl_container, mFragment)
+                                .commit();
+                        break;
+                    case R.id.action_me:
+                        toolbar.setTitle("Me");
+                        tabLayout.setVisibility(View.GONE);
+                        mFragment = UserProfileFragment.newFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fl_container, mFragment)
+                                .commit();
+                        break;
+                    case R.id.action_more:
+                        toolbar.setTitle("Meditate");
+                        tabLayout.setVisibility(View.VISIBLE);
+                        mFragment = MeditateFragment.newFragemnt();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fl_container, mFragment)
+                                .commit();
+                        break;
+                }
+                return true;
             }
         });
 
-        if (!list.isEmpty()) {
-
-            adapter.setNewData(list);
-
-        }
-
-        List<TopicsVO> topics = TopicsModelImpl.getObjInstance().getTopics("b002c7e1a528b7cb460933fc2875e916", new TopicsModel.TopicsDeleagte() {
-
-            @Override
-            public void onSuccess(List<TopicsVO> topics) {
-
-                mAdapter.setNewData(topics);
-
-            }
-
-            @Override
-            public void onFail(String error) {
-
-            }
-        });
-
-        if (!topics.isEmpty()) {
-
-            mAdapter.setNewData(topics);
-        }
+        toolbar.setTitle("Meditate");
+        tabLayout.setVisibility(View.VISIBLE);
+        mFragment = MeditateFragment.newFragemnt();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_container, mFragment)
+                .commit();
 
 
     }
@@ -152,5 +115,11 @@ public class MainActivity extends AppCompatActivity implements ProgramDelegate {
         Intent intent = new Intent(MainActivity.this, ProgramsDetailsActivity.class);
         intent.putExtra("programID", programsVO.getprogramID());
         startActivity(intent);
+    }
+
+    public static Intent newIntent(Context context) {
+
+        return new Intent(context, MainActivity.class);
+
     }
 }

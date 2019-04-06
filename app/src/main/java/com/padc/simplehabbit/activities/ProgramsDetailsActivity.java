@@ -16,7 +16,7 @@ import com.padc.simplehabbit.adapters.SessionsAdapter;
 import com.padc.simplehabbit.data.CatProgsModelImpl;
 import com.padc.simplehabbit.data.vos.ProgramsVO;
 
-public class ProgramsDetailsActivity extends AppCompatActivity {
+public class ProgramsDetailsActivity extends BaseActivity {
 
     private RecyclerView rvSession;
     private SessionsAdapter mAdapter;
